@@ -1,5 +1,5 @@
 # File: .github/workflows/repo-sync.yml
- name: sync-l499477004-JD-scripts
+ name: sync-l499477004-JDscripts
 on:
   schedule:
     - cron: '1 0,15 * * *'
@@ -9,7 +9,7 @@ on:
   push:
     branches: [ master ]
   repository_dispatch:
-    types: sync-l499477004-JD-scripts
+    types: sync-l499477004-JDscripts
 jobs:
   repo-sync:
     env:
@@ -21,7 +21,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: sync l499477004-JD-scripts
+      - name: sync l499477004-JDscripts
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
