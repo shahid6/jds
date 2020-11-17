@@ -1,9 +1,9 @@
 {
-  "id": "l499477004.app.sub",
-  "name": "l499477004脚本订阅",
-  "author": "@l499477004",
+  "id": "lxk0301.app.sub",
+  "name": "lxk0301脚本订阅",
+  "author": "@lxk0301",
   "icon": "https://avatars0.githubusercontent.com/u/21308593?s=52&v=4",
-  "repo": "https://github.com/l499477004/JD-scripts/",
+  "repo": "https://github.com/lxk0301/jd_scripts/",
   "apps": [
     {
       "id": "JD_Cookies",
@@ -132,9 +132,9 @@
           "desc": "京东水果互助码.这是别人的shareCode,你帮别人助力."
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_fruit.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_fruit.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdnc_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png"
@@ -250,9 +250,9 @@
           "desc": "东东萌宠互助码.这是别人的shareCode,你帮别人助力."
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_pet.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_pet.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdmc_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdmc.png"
@@ -336,9 +336,9 @@
           "desc": "种豆得豆互助码.这是别人的助力码,你帮别人助力."
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_plantBean.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdzd_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdzd.png"
@@ -410,9 +410,9 @@
           ]
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_joy.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdcww_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png"
@@ -443,14 +443,22 @@
             },
             {
               "key": "1",
-              "label": "兑换京豆"
+              "label": "兑换20京豆"
+            },
+            {
+              "key": "500",
+              "label": "兑换500京豆"
+            },
+            {
+              "key": "1000",
+              "label": "兑换1000京豆"
             }
           ]
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_joy_reward.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_reward.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdcww_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png"
@@ -513,9 +521,9 @@
           "desc": "多个账号使用英文逗号','隔开,最多6个"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_joy_run.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdcww_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png"
@@ -532,18 +540,11 @@
           "val": true,
           "type": "boolean",
           "desc": "运行京东摇钱树脚本时不发出系统弹窗通知"
-        },
-        {
-          "id": "jdMoneyTreeNoticeTimes",
-          "name": "通知频率",
-          "val": 2,
-          "type": "number",
-          "desc": "脚本运行多少次后弹窗通知(默认2次，如果开启静默运行，此设置失效)"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_moneyTree.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_moneyTree.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdyqs_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdyqs.png"
@@ -562,9 +563,9 @@
           "desc": "运行京东天天加速脚本时不发出系统弹窗通知"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_speed.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_speed.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdjs_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdjs.png"
@@ -614,9 +615,9 @@
           "desc": "匹配到此处店铺后面(包括此店铺)的不再进行取关(此处内容请尽量从头开始输入店铺名称)"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_unsubscribe.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_unsubscribe.js",
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
@@ -721,12 +722,12 @@
           "desc": "京小超商圈互助码"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
       "scripts":[
         {
           "name" : "京小超",
-          "script" : "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_superMarket.js"
+          "script" : "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_superMarket.js"
         }
       ],
       "icons": [
@@ -757,12 +758,12 @@
           "desc": "输入兑换奖品名称(默认不兑换奖品)"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
       "scripts": [
         {
           "name" : "京小超兑换奖品",
-          "script" : "https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_blueCoin.js"
+          "script" : "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_blueCoin.js"
         }
       ],
       "icons": [
@@ -771,7 +772,7 @@
       ]
     },
     {
-      "id": "l499477004Webhook",
+      "id": "lxk0301Webhook",
       "name": "Webhook",
       "keys": [
         "ACTIONS_TRIGGER_TOKEN",
@@ -792,7 +793,7 @@
           "name": "github 用户名",
           "val": "",
           "type": "text",
-          "desc": "例如：l499477004"
+          "desc": "例如：lxk0301"
         },
         {
           "id": "repo",
@@ -809,9 +810,9 @@
           "desc": ".github/workflows/路径里面yml文件repository_dispatch项目的types值，例如jd_fruit.yml里面的值为fruit,多个使用英文逗号','隔开"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/backUp/webhook.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/backUp/webhook.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/webhooks_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/webhooks.png"
@@ -848,9 +849,9 @@
           "desc": "需要修改最小的运动步数的数字,例如:25000"
         }
       ],
-      "author": "@l499477004",
-      "repo": "https://github.com/l499477004/JD-scripts",
-      "script": "https://raw.githubusercontent.com/l499477004/JD-scripts/master/backUp/xmSports.js",
+      "author": "@lxk0301",
+      "repo": "https://github.com/lxk0301/jd_scripts",
+      "script": "https://raw.githubusercontent.com/lxk0301/jd_scripts/master/backUp/xmSports.js",
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/xmyd_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/xmyd.png"
