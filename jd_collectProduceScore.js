@@ -3,7 +3,7 @@
 仅仅是收集一下京东双十一全名营业每秒产生的金币
 
 每小时的第20分运行一次
-20 * * * * https://raw.githubusercontent.com/lxk0301/scripts/master/jd_collectProduceScore.js
+20 * * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_collectProduceScore.js
  */
 const $ = new Env('京东全民营业领金币');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -46,11 +46,17 @@ async function collectProduceScore() {
   if ($.secretp) {
     const temp = {
       "taskId": "collectProducedCoin",
-      "rnd": "",
+      "rnd": getRnd(),
       "inviteId": "-1",
       "stealId": "-1"
     }
-    const body = encode(temp, $.secretp);
+    const extraData = {
+      "jj": 6,
+      "buttonid": "jmdd-react-smash_0",
+      "sceneid": "homePageh5",
+      "appid": '50073'
+    }
+    const body = encode(temp, $.secretp, extraData);
     await stall_collectProduceScore(body);
   }
 }
@@ -102,20 +108,23 @@ function getHomeData() {
     })
   })
 }
-function encode(data, aa) {
+function encode(data, aa, extraData) {
   const temp = {
-    "extraData": "{}",
-    "businessData": (JSON.stringify(data)),
+    "extraData": JSON.stringify(extraData),
+    "businessData": JSON.stringify(data),
     "secretp": aa,
   }
   return { "ss": (JSON.stringify(temp)) };
+}
+function getRnd() {
+  return Math.floor(1e6 * Math.random()).toString();
 }
 function taskPostUrl(functionId, body = {}) {
   return {
     url: `${JD_API_HOST}?functionId=${functionId}`,
     body: `functionId=${functionId}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=1.0.0`,
     headers: {
-      'User-Agent': 'jdapp;iPhone;9.2.0;14.1;;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
+      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
       'Content-Type': 'application/x-www-form-urlencoded',
       'Host': 'api.m.jd.com',
       'Cookie': cookie,
