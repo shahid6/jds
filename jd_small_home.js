@@ -11,9 +11,7 @@
 助力好友：一个账号一天只能助力一次(即：每个人助力机会只有一次)
 后期有空优化相互助力功能
 TODO；装扮领京豆（使用WO币购买装饰品可以获得京豆，分别可获得5,20，50,100,200,400,700，1200京豆）
-
 注：目前使用此脚本会给脚本内置的两个码进行助力，请知晓
-
 APP活动入口：
 京东APP首页 ->搜索 玩一玩 -> DIY理想家
 或 京东APP -> 我的-> 游戏与更多 - > 东东小窝
@@ -21,21 +19,17 @@ APP活动入口：
 来客有礼 - > 首页 -> 东东小窝
 网页入口（注：进入后不能再此刷新，否则会有问题，需重新输入此链接进入）
 https://h5.m.jd.com/babelDiy/Zeus/2HFSytEAN99VPmMGZ6V4EYWus1x/index.html
-
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, 小火箭，JSBox, Node.js
 ===============Quantumultx===============
 [task_local]
 #东东小窝
-16 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_small_home.js, tag=东东小窝, enabled=true
-
+16 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_small_home.js, tag=东东小窝, img-url=https://raw.githubusercontent.com/58xinian/icon/master/ddxw.png  enabled=true
 ================Loon==============
 [Script]
 cron "16 0 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_small_home.js, tag=东东小窝
-
 ===============Surge=================
 东东小窝 = type=cron,cronexp="16 0 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_small_home.js
-
 ============小火箭=========
 东东小窝 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_small_home.js, cronexpr="16 0 * * *", timeout=200, enable=true
  */
@@ -46,6 +40,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
+let isPurchaseShops = false;//是否一键加购商品到购物车，默认不加购
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -144,13 +139,13 @@ function queryByUserId() {
     })
   })
 }
-async function doChannelsListTask(taskId) {
+async function doChannelsListTask(taskId, taskType) {
   await queryChannelsList(taskId);
   for (let item of $.queryChannelsList) {
     if (item.showOrder !== 1) {
       await $.wait(1000)
       await followChannel(taskId, item.id)
-      await queryDoneTaskRecord(taskId);
+      await queryDoneTaskRecord(taskId, taskType);
     }
   }
 }
@@ -162,12 +157,16 @@ async function helpFriends() {
 }
 async function doAllTask() {
   await queryAllTaskInfo();//获取任务详情列表$.taskList
+  console.log(` 任务名称   完成进度 `)
+  for (let item of $.taskList) {
+    console.log(`${item.ssjjTaskInfo.name}      ${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum || 1}`)
+  }
   for (let item of $.taskList) {
     if (item.ssjjTaskInfo.type === 1) {
       //邀请好友助力自己
       // await createAssistUser('1330186694770339842', item.ssjjTaskInfo.id)
       $.createAssistUserID = item.ssjjTaskInfo.id;
-      console.log(`助力您的好友:${item.doneNum}人`)
+      console.log(`\n\n助力您的好友:${item.doneNum}人`)
     }
     if (item.ssjjTaskInfo.type === 2) {
       //每日打卡
@@ -186,17 +185,35 @@ async function doAllTask() {
       for (let i = 0; i < new Array(item.ssjjTaskInfo.awardOfDayNum || 1).fill('').length; i++) {
         await game(item.ssjjTaskInfo.id, item.doneNum);
       }
-      // await game(item.ssjjTaskInfo.id, item.doneNum);
-      // await doAllTask();
     }
-
+    if (item.ssjjTaskInfo.type === 4) {
+      //关注店铺
+      if (item.doneNum === item.ssjjTaskInfo.awardOfDayNum) {
+        console.log(`${item.ssjjTaskInfo.name}已完成[${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum}]`)
+        continue
+      }
+      for (let i = 0; i < new Array(item.ssjjTaskInfo.awardOfDayNum).fill('').length; i++) {
+        await followShops('followShops', item.ssjjTaskInfo.id);//一键关注店铺
+        await queryDoneTaskRecord(item.ssjjTaskInfo.id, item.ssjjTaskInfo.type);
+      }
+    }
+    if (item.ssjjTaskInfo.type === 5) {
+      //浏览店铺
+      if (item.doneNum === item.ssjjTaskInfo.awardOfDayNum) {
+        console.log(`${item.ssjjTaskInfo.name}已完成[${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum}]`)
+        continue
+      }
+      for (let i = 0; i < new Array(item.ssjjTaskInfo.awardOfDayNum).fill('').length; i++) {
+        await browseChannels('browseShops', item.ssjjTaskInfo.id, item.browseId);
+      }
+    }
     if (item.ssjjTaskInfo.type === 6) {
       //关注4个频道
       if (item.doneNum === item.ssjjTaskInfo.awardOfDayNum) {
         console.log(`${item.ssjjTaskInfo.name}已完成[${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum}]`)
         continue
       }
-      await doChannelsListTask(item.ssjjTaskInfo.id)
+      await doChannelsListTask(item.ssjjTaskInfo.id, item.ssjjTaskInfo.type)
     }
     if (item.ssjjTaskInfo.type === 7) {
       //浏览3个频道
@@ -207,8 +224,28 @@ async function doAllTask() {
       for (let i = 0; i < new Array(item.ssjjTaskInfo.awardOfDayNum || 1).fill('').length; i++) {
         await browseChannels('browseChannels', item.ssjjTaskInfo.id, item.browseId);
       }
-      // await browseChannels('browseChannels', item.ssjjTaskInfo.id, item.browseId);
-      // await doAllTask();
+    }
+    isPurchaseShops = $.isNode() ? (process.env.PURCHASE_SHOPS ? process.env.PURCHASE_SHOPS : isPurchaseShops) : ($.getdata("isPurchaseShops") ? $.getdata("isPurchaseShops") : isPurchaseShops);
+    if (isPurchaseShops && item.ssjjTaskInfo.type === 9) {
+      //加购商品
+      if (item.doneNum === item.ssjjTaskInfo.awardOfDayNum) {
+        console.log(`${item.ssjjTaskInfo.name}已完成[${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum}]`)
+        continue
+      }
+      for (let i = 0; i < new Array(item.ssjjTaskInfo.awardOfDayNum).fill('').length; i++) {
+        await followShops('purchaseCommodities', item.ssjjTaskInfo.id);//一键加购商品
+        await queryDoneTaskRecord(item.ssjjTaskInfo.id, item.ssjjTaskInfo.type);
+      }
+    }
+    if (item.ssjjTaskInfo.type === 10) {
+      //浏览商品
+      if (item.doneNum === item.ssjjTaskInfo.awardOfDayNum) {
+        console.log(`${item.ssjjTaskInfo.name}已完成[${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum}]`)
+        continue
+      }
+      for (let i = 0; i < new Array(item.ssjjTaskInfo.awardOfDayNum).fill('').length; i++) {
+        await browseChannels('browseCommodities', item.ssjjTaskInfo.id, item.browseId);
+      }
     }
     if (item.ssjjTaskInfo.type === 11) {
       //浏览会场
@@ -250,7 +287,8 @@ function queryChannelsList(taskId) {
     })
   })
 }
-//浏览频道，浏览会场API
+
+//浏览频道，浏览会场，浏览商品，浏览店铺API
 function browseChannels(functionID ,taskId, browseId) {
   return new Promise(resolve => {
     $.get(taskUrl(`/ssjj-task-record/${functionID}/${taskId}/${browseId}`), (err, resp, data) => {
@@ -260,7 +298,7 @@ function browseChannels(functionID ,taskId, browseId) {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
-            console.log(`${functionID === 'browseChannels' ? '浏览频道' : '浏览会场'}`, data)
+            console.log(`${functionID === 'browseChannels' ? '浏览频道' : functionID === 'browseMeetings' ? '浏览会场' : functionID === 'browseShops' ? '浏览店铺' : '浏览商品'}`, data)
             data = JSON.parse(data);
             if (data.head.code === 200) {
               if (data.body) {
@@ -278,9 +316,9 @@ function browseChannels(functionID ,taskId, browseId) {
   })
 }
 //记录已关注的频道
-function queryDoneTaskRecord(taskId) {
+function queryDoneTaskRecord(taskId, taskType) {
   return new Promise(resolve => {
-    $.get(taskUrl(`/ssjj-task-record/queryDoneTaskRecord/6/${taskId}`), (err, resp, data) => {
+    $.get(taskUrl(`/ssjj-task-record/queryDoneTaskRecord/${taskType}/${taskId}`), (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -290,6 +328,33 @@ function queryDoneTaskRecord(taskId) {
             data = JSON.parse(data);
             if (data.head.code === 200) {
               if (data.body) {
+                // message += `【限时连连看】成功，活动${awardWoB}WO币\n`;
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//一键关注店铺，一键加购商品API
+function followShops(functionID, taskId) {
+  return new Promise(async resolve => {
+    $.get(taskUrl(`/ssjj-task-record/${functionID}/${taskId}`), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data);
+            if (data.head.code === 200) {
+              if (data.body) {
+                console.log(`${functionID === 'followShops'? '一键关注店铺': '一键加购商品'}结果：${data.head.msg}`);
                 // message += `【限时连连看】成功，活动${awardWoB}WO币\n`;
               }
             }

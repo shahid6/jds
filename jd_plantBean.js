@@ -9,17 +9,13 @@
 =====================================Quantumult X=================================
 [task_local]
 1 7-21/2 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js, tag=种豆得豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzd.png, enabled=true
-
 =====================================Loon================================
 [Script]
 cron "1 7-21/2 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js,tag=京东种豆得豆
-
 ======================================Surge==========================
 京东种豆得豆 = type=cron,cronexp="1 7-21/2 * * *",wake-system=1,timeout=120,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js
-
 ====================================小火箭=============================
 京东种豆得豆 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js, cronexpr="1 7-21/2 * * *", timeout=200, enable=true
-
 搬的https://github.com/uniqueque/QuantumultX/blob/4c1572d93d4d4f883f483f907120a75d925a693e/Script/jd_plantBean.js
 */
 const $ = new Env('京东种豆得豆');
@@ -34,15 +30,15 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
                    //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'savlhrg5x3lus4ocduqavx6ore@savlhrg5x3lus4ocduqavx6ore@7imgugr2v6clcu26ezhlngnxwli2wbzistqc33i',
+  'savlhrg5x3lus4ocduqavx6ore@savlhrg5x3lus4ocduqavx6ore@7imgugr2v6clcu26ezhlngnxwli2wbzistqc33i@7qol36k2wexakflk6e6rmdjwrfz2g2rlfzgdazq',
   //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'savlhrg5x3lus4ocduqavx6ore@savlhrg5x3lus4ocduqavx6ore@7imgugr2v6clcu26ezhlngnxwli2wbzistqc33i',
+  'savlhrg5x3lus4ocduqavx6ore@savlhrg5x3lus4ocduqavx6ore@7imgugr2v6clcu26ezhlngnxwli2wbzistqc33i@7qol36k2wexakflk6e6rmdjwrfz2g2rlfzgdazq',
 ]
 let currentRoundId = null;//本期活动id
 let lastRoundId = null;//上期id
 let roundList = [];
 let awardState = '';//上期活动的京豆是否收取
-let randomCount = 20;
+let randomCount = $.isNode() ? 20 : 5;
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
