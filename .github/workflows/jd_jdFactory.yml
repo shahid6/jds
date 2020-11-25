@@ -6,7 +6,7 @@ name: jd_jdFactory
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */1 * * *'
+    - cron: '26 * * * *'
   watch:
     types: started
   repository_dispatch:
@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout
         run: |
-          git clone https://github.com/l499477004/JD-scripts.git ~/scripts
+          git clone https://github.com/lxk0301/jd_scripts.git ~/scripts
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
