@@ -51,7 +51,7 @@ if ($.isNode()) {
 }
 
 const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
-const inviteCodes = ['1330463441367388162'];
+
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
@@ -142,7 +142,7 @@ function queryByUserId() {
 async function doChannelsListTask(taskId, taskType) {
   await queryChannelsList(taskId);
   for (let item of $.queryChannelsList) {
-    if (item.showOrder !== 1) {
+    if (item.showOrder === 1) {
       await $.wait(1000)
       await followChannel(taskId, item.id)
       await queryDoneTaskRecord(taskId, taskType);
@@ -150,7 +150,9 @@ async function doChannelsListTask(taskId, taskType) {
   }
 }
 async function helpFriends() {
-  for (let item of inviteCodes) {
+  await updateInviteCode();
+  if (!$.updatePkActivityIdRes) await updateInviteCodeCDN();
+  for (let item of $.inviteCodes.inviteCode) {
     if (!item) continue
     await createAssistUser(item, $.createAssistUserID || "1318106976846299138");
   }
@@ -159,7 +161,7 @@ async function doAllTask() {
   await queryAllTaskInfo();//获取任务详情列表$.taskList
   console.log(` 任务名称   完成进度 `)
   for (let item of $.taskList) {
-    console.log(`${item.ssjjTaskInfo.name}      ${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum || 1}`)
+    console.log(`${item.ssjjTaskInfo.name}      ${item.doneNum}/${item.ssjjTaskInfo.awardOfDayNum || (item.ssjjTaskInfo.type === 1 ? 4: 1)}`)
   }
   for (let item of $.taskList) {
     if (item.ssjjTaskInfo.type === 1) {
@@ -407,7 +409,7 @@ function createInviteUser() {
             if (data.head.code === 200) {
               if (data.body) {
                 if (data.body.id) {
-                  console.log(`\n您的${$.name}shareCode:【${data.body.id}】\n`);
+                  console.log(`\n您的${$.name}shareCode(每天都是变化的):【${data.body.id}】\n`);
                   $.shareCode = data.body.id;
                 }
               }
@@ -681,6 +683,41 @@ function login(userName) {
         $.logErr(e, resp)
       } finally {
         resolve(data);
+      }
+    })
+  })
+}
+function updateInviteCode(url = 'https://raw.githubusercontent.com/lxk0301/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
+  return new Promise(resolve => {
+    $.get({url}, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+        } else {
+          $.inviteCodes = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function updateInviteCodeCDN(url = 'https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_updateSmallHomeInviteCode.json') {
+  return new Promise(resolve => {
+    $.get({url}, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          $.inviteCodes = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
       }
     })
   })
