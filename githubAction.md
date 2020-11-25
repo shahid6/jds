@@ -30,7 +30,7 @@
 
   - 方案A - 强制远程分支覆盖自己的分支(**新手推荐使用**)
   
-      1. 参考tg@wukongdada这篇教程 [保持自己github的forks自动和上游仓库同步的教程](https://github.com/l499477004/JD-scripts/blob/master/backUp/gitSync.md) ， 安装[pull插件](https://github.com/apps/pull) 并确认此项目已在pull插件的作用下（参考@twukongdada这篇教程文中1-d）
+      1. 参考tg@wukongdada这篇教程 [保持自己github的forks自动和上游仓库同步的教程](https://github.com/l499477004/JD-scripts/blob/master/gitSync.md) ， 安装[pull插件](https://github.com/apps/pull) 并确认此项目已在pull插件的作用下（参考@twukongdada这篇教程文中1-d）
       
       2. 确保.github/pull.yml文件正常存在，yml内上游作者填写正确(此项目已填好，无需更改)。
       
@@ -51,7 +51,7 @@
     > 上游变动后pull插件会自动发起pr，但如果有冲突需要自行**手动**确认。
     > 如果上游更新涉及workflow里的文件内容改动，需要自行**手动**确认。
     
-    1. 参考tg@wukongdada这篇教程 [保持自己github的forks自动和上游仓库同步的教程](https://github.com/l499477004/JD-scripts/blob/master/backUp/gitSync.md) ， 安装[pull插件](https://github.com/apps/pull) 并确认此项目已在pull插件的作用下（参考@twukongdada这篇教程文中1-d）
+    1. 参考tg@wukongdada这篇教程 [保持自己github的forks自动和上游仓库同步的教程](https://github.com/l499477004/JD-scripts/blob/master/gitSync.md) ， 安装[pull插件](https://github.com/apps/pull) 并确认此项目已在pull插件的作用下（参考@twukongdada这篇教程文中1-d）
     2. 确保.github/pull.yml文件正常存在，yml内上游作者填写正确(此项目已填好，无需更改)。
     3. 将pull.yml里面的`mergeMethod: hardreset`修改为`mergeMethod: merge`保存。
     4. ENJOY!上游更改三小时左右就会自动发起同步。
