@@ -14,7 +14,7 @@ a)  登录自己的github账号，另开网页打开 [https://github.com/wei/pul
 
 b)  点击Pull app进行安装。	
 
-![../icon/git2.jpg](../icon/git2.jpg)	
+![/icon/git2.jpg](/icon/git2.jpg)	
 
 
 
