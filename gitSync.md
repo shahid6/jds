@@ -7,6 +7,7 @@
 > 当上游的仓库仅有一个默认分支。或者上游仓库有两个分支，我们仅需要同步他的默认分支，其他分支对内容对我们来说无关紧要。
 
 ![git1.jpg](icon/git1.jpg)
+<a href="https://imgchr.com/i/DUb8iR"><img src="https://s3.ax1x.com/2020/11/25/DUb8iR.png" alt="DUb8iR.png" border="0" /></a>
 	
 
 a)  登录自己的github账号，另开网页打开 [https://github.com/wei/pull](https://github.com/wei/pull)	
@@ -14,8 +15,8 @@ a)  登录自己的github账号，另开网页打开 [https://github.com/wei/pul
 
 b)  点击Pull app进行安装。	
 
-![/icon/git2.jpg](/icon/git2.jpg)	
-
+![/icon/git2.jpg](../icon/git2.jpg)	
+<a href="https://imgchr.com/i/DUbJRx"><img src="https://s3.ax1x.com/2020/11/25/DUbJRx.png" alt="DUbJRx.png" border="0" /></a>
 
 
 c)  安装过程中会让你选择要选择那一种方式，All repositories(就是同步已经frok的仓库以及未来fork的仓库)，Only select repositories(仅选择要自己需要同步的仓库，其他fork的仓库不会被同步)，根据自己需求选择，实在不知道怎么选择，就选All repositories；点击install，完成安装。	
