@@ -8,7 +8,11 @@
 
 
 
+<<<<<<< HEAD:gitSync.md
 ![git1.jpg](../icon/git1.jpg)
+=======
+![git1.jpg](https://github.com/l499477004/JD-scripts/blob/master/icon/git1.jpg)
+>>>>>>> e4939a8361262a815f44c67b0953263d8cd14da3:backUp/gitSync.md
       
       	
 
