@@ -76,6 +76,10 @@
  - 可以精确控制任务运行时间，有三种办法：[docker办法一](https://github.com/lxk0301/jd_scripts/tree/master/docker)、[docker办法二（和本地安装Node.js类似）](https://github.com/EvineDeng/jd-base)、[docker办法三](https://github.com/chinnkarahoi/jd-scripts-docker)
  - [环境变量](https://github.com/lxk0301/jd_scripts/blob/master/githubAction.md#%E4%B8%8B%E6%96%B9%E6%8F%90%E4%BE%9B%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84-secrets%E5%85%A8%E9%9B%86%E5%90%88)
  
+### 方法四：GitHub Action（推荐）
+
+ - 使用教程暂且可看 [这里](githubAction.md)
+
 #### 注：以上三种运行机制都是Node.js，故您需仔细阅读下面几点
 
 
@@ -86,7 +90,11 @@
 
   - 方法三Docker安装Cookie请见各自的说明。
 
-### 方法四：iOS系统的代理软件（QuantumultX, Surge, Loon, 小火箭）
+  - 方法四京东cookie不要！不要！不要！填写到 [jdCookie.js](https://github.com/l499477004/JD-scripts/blob/master/jdCookie.js) 里面
+   
+  - 获取京东cookie教程可参考 [浏览器获取京东cookie教程](https://github.com/l499477004/JD-scripts/blob/master/backUp/GetJdCookie.md) , [插件获取京东cookie教程](https://github.com/l499477004/JD-scripts/blob/master/backUp/GetJdCookie2.md)
+
+### 方法五：iOS系统的代理软件（QuantumultX, Surge, Loon, 小火箭）
 
 #### 以下内容只针对iOS用户
 
