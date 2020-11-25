@@ -28,9 +28,9 @@ if ($.isNode()) {
 } else {
   cookiesArr.push(...[$.getdata('CookieJD'), $.getdata('CookieJD2')]);
 }
-const wantProduct = `便携式手持风扇`;//心仪商品名称
+const wantProduct = `灵蛇机械键盘`;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const inviteCodes = [`P04z54XCjVWnYaS5u2ak7ZCdan1Bdd2GGiWvC6_uERj`, 'P04z54XCjVWnYaS5m9cZ2ariXVJwHf0bgkG7Uo'];
+const inviteCodes = [`P04z54XCjVWnYaS5jEBAWT_2nxKkTTf`];
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
