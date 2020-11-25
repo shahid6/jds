@@ -8,7 +8,7 @@
 
 
 
-![git1.jpg](../../icon/git1.jpg)
+![git1.jpg](https://github.com/l499477004/JD-scripts/blob/master/icon/git1.jpg)
       
       	
 
