@@ -31,7 +31,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 
 let cookiesArr = [], cookie = '';
-const inviteCodes = ['gB99tYLjvPcEFloDgamoBw==', 'V5LkjP4WRyjeCKR9VRwcRX0bBuTz7MEK0-E99EJ7u0k='];
+const inviteCodes = ['gB99tYLjvPcEFloDgamoBw==', 'V5LkjP4WRyjeCKR9VRwcRX0bBuTz7MEK0-E99EJ7u0k=', '1uzRU5HkaUgvy0AB5Q9VUg=='];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -99,10 +99,12 @@ async function jdDreamFactory() {
 
 
 // 收取发电机的电力
-function collectElectricity(facId = factoryId, help = false) {
+function collectElectricity(facId = factoryId, help = false, master = '') {
   return new Promise(async resolve => {
-    const url = `/dreamfactory/generator/CollectCurrentElectricity?zone=dream_factory&apptoken=&pgtimestamp=&phoneID=&factoryid=${facId}&doubleflag=1&sceneval=2&g_login_type=1`;
-
+    let url = `/dreamfactory/generator/CollectCurrentElectricity?zone=dream_factory&apptoken=&pgtimestamp=&phoneID=&factoryid=${facId}&doubleflag=1&sceneval=2&g_login_type=1`;
+    if (help && master) {
+      url = `/dreamfactory/generator/CollectCurrentElectricity?zone=dream_factory&factoryid=${facId}&master=${master}&sceneval=2&g_login_type=1`;
+    }
     $.get(taskurl(url), (err, resp, data) => {
       try {
         if (err) {
@@ -124,7 +126,7 @@ function collectElectricity(facId = factoryId, help = false) {
               }
 
             } else {
-              // console.log(data)
+              console.log(data.msg)
             }
           } else {
             console.log(`京东服务器返回空数据`)
@@ -285,7 +287,7 @@ function hireAward() {
               message += `【打工电力】：收取成功\n`
             } else {
               console.log(`打工电力：收取失败，${data.msg}`)
-              message += `【打工电力】：收取失败，${data.msg}\n`
+              message += `【打工电力】收取失败，${data.msg}\n`
             }
           } else {
             console.log(`京东服务器返回空数据`)
@@ -322,7 +324,7 @@ function assistFriend(sharepin) {
             if (data['ret'] === 0) {
               console.log(`助力朋友：${sharepin}成功`)
             } else {
-              console.log(`助力朋友：${data.msg}`)
+              console.log(`助力朋友[${sharepin}]失败：${data.msg}`)
             }
           } else {
             console.log(`京东服务器返回空数据`)
@@ -438,7 +440,7 @@ function userInfo() {
 function stealFriend() {
   return new Promise(async resolve => {
     const url = `//dreamfactory/friend/QueryFactoryManagerList?zone=dream_factory&sceneval=2`;
-    $.get(taskurl(url), (err, resp, data) => {
+    $.get(taskurl(url), async (err, resp, data) => {
       data = JSON.parse(data);
       if (data['ret'] === 0) {
         data = data['data'];
@@ -446,11 +448,13 @@ function stealFriend() {
           let pin = data.list[i]['encryptPin'];
           if (data.list[i]['collectFlag'] === 1) {
             //只有collectFlag为1的时候,才能偷取好友电力
-            getFactoryIdByPin(pin).then(async (facId) => {
-              if (facId) await collectElectricity(facId,true)
-            }).catch(err => {
-
-            })
+            const facId = await getFactoryIdByPin(pin);
+            if (facId) await collectElectricity(facId,true, data.list[i]['key'])
+            // getFactoryIdByPin(pin).then(async (facId) => {
+            //   if (facId) await collectElectricity(facId,true)
+            // }).catch(err => {
+            //
+            // })
           } else {
             console.log(`此好友[${pin}]暂不能被你收取电力`)
           }
