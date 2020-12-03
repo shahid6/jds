@@ -6,7 +6,8 @@
 
 
 ##############短期活动##############
-# 暂无
+# 京喜故事(2020.12.12活动过期)
+10 * * * * node /scripts/jd_jxstory.js |ts >> /scripts/logs/jd_jxstory.log 2>&1
 
 
 ##############长期活动##############
@@ -61,3 +62,5 @@
 16 6 * * * node /scripts/jd_small_home.js |ts >> /scripts/logs/jd_small_home.log 2>&1
 # 东东工厂
 36 * * * * node /scripts/jd_jdfactory.js |ts >> /scripts/logs/jd_jdfactory.log 2>&1
+#十元街
+36 8 * * * node /scripts/jd_syj.js |ts >> /scripts/logs/jd_syj.log 2>&1
