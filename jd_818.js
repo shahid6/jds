@@ -8,26 +8,21 @@
 京东手机狂欢城活动，每日可获得30+以上京豆（其中20京豆是往期奖励，需第一天参加活动后，第二天才能拿到）
 活动时间10.21日-11.12日结束，活动23天，保底最少可以拿到690京豆
 活动地址: https://rdcseason.m.jd.com/#/index
-
 其中有20京豆是往期奖励，需第一天参加活动后，第二天才能拿到！！！！
-
-
 每天0/6/12/18点逛新品/店铺/会场可获得京豆，京豆先到先得
 往期奖励一般每天都能拿20京豆
-
 注：脚本运行会给我提供的助力码助力，介意者可删掉脚本第48行helpCode里面的东西。留空即可（const helpCode = []）;
-
 支持京东双账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 // quantumultx
 [task_local]
 #京东手机狂欢城
-1 0-18/6 * * * https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_818.js, tag=京东手机狂欢城, enabled=true
+1 0-18/6 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_818.js, tag=京东手机狂欢城, enabled=true
 // Loon
 [Script]
-cron "1 0-18/6 * * *" script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_818.js,tag=京东手机狂欢城
+cron "1 0-18/6 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_818.js,tag=京东手机狂欢城
 // Surge
-京东手机狂欢城 = type=cron,cronexp=1 0-18/6 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_818.js
+京东手机狂欢城 = type=cron,cronexp=1 0-18/6 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_818.js
  */
 const $ = new Env('京东手机狂欢城');
 
@@ -847,7 +842,7 @@ function updateShareCodes(url = 'https://raw.githubusercontent.com/lxk0301/updat
     })
   })
 }
-function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_shareCodes.json') {
+function updateShareCodesCDN(url = 'https://raw.fastgit.org/lxk0301/updateTeam/master/jd_shareCodes.json') {
   return new Promise(resolve => {
     //https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_shareCodes.json
     //https://raw.githubusercontent.com/lxk0301/updateTeam/master/jd_shareCodes.json
@@ -910,8 +905,8 @@ function TotalBean() {
 async function showMsg() {
   let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
   if (nowTime > new Date(activeEndTime).getTime()) {
-    $.msg($.name, '活动已结束', `该活动累计获得京豆：${$.jbeanCount}个\niOS用户请删除此脚本\ngithub action用户请删除.github/workflows/jd_818.yml文件\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\nhttps://github.com/l499477004/JD-scripts`, {"open-url": "https://github.com/l499477004/JD-scripts"});
-    if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\ngithub action用户请删除.github/workflows/jd_818.yml文件\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\n https://github.com/l499477004/JD-scripts`)
+    $.msg($.name, '活动已结束', `该活动累计获得京豆：${$.jbeanCount}个\niOS用户请删除此脚本\ngithub action用户请删除.github/workflows/jd_818.yml文件\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\nhttps://github.com/lxk0301/jd_scripts`, {"open-url": "https://github.com/lxk0301/jd_scripts"});
+    if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\ngithub action用户请删除.github/workflows/jd_818.yml文件\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\n https://github.com/lxk0301/jd_scripts`)
   } else {
     $.msg($.name, `京东账号${$.index} ${$.nickName || $.UserName}`, `${$.jbeanCount ? `${$.integer ? `今日获得积分：${$.integer}个\n` : ''}${$.num ? `今日排名：${$.num}\n` : ''}今日参数人数：${$.lasNum}人\n累计获得京豆：${$.jbeanCount}个🐶\n` : ''}${$.jbeanCount ? `累计获得积分：${$.integralCount}个\n` : ''}${$.jbeanNum ? `${$.date}日奖品：${$.jbeanNum}\n` : ''}具体详情点击弹窗跳转后即可查看`, {"open-url": "https://rdcseason.m.jd.com/#/hame"});
   }
