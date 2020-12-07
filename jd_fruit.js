@@ -1,5 +1,5 @@
 /*
-东东水果:脚本更新地址 https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_fruit.js
+东东水果:脚本更新地址 https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_fruit.js
 更新时间：2020-11-30
 东东农场活动链接：https://h5.m.jd.com/babelDiy/Zeus/3KSjXqQabiTuD1cJ28QskrpWoBKT/index.html
 已支持IOS双京东账号,Node.js支持N个京东账号
@@ -9,17 +9,14 @@
 ==========================Quantumultx=========================
 [task_local]
 #jd免费水果
-5 6-18/6 * * * https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_fruit.js, tag=东东农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
+5 6-18/6 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_fruit.js, tag=东东农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
 =========================Loon=============================
 [Script]
-cron "5 6-18/6 * * *" script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_fruit.js,tag=东东农场
-
+cron "5 6-18/6 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_fruit.js,tag=东东农场
 =========================Surge============================
-东东农场 = type=cron,cronexp="5 6-18/6 * * *",wake-system=1,timeout=120,script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_fruit.js
-
+东东农场 = type=cron,cronexp="5 6-18/6 * * *",wake-system=1,timeout=120,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_fruit.js
 =========================小火箭===========================
-东东农场 = type=cron,script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_fruit.js, cronexpr="5 6-18/6 * * *", timeout=200, enable=true
-
+东东农场 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_fruit.js, cronexpr="5 6-18/6 * * *", timeout=200, enable=true
 jd免费水果 搬的https://github.com/liuxiaoyucc/jd-helper/blob/a6f275d9785748014fc6cca821e58427162e9336/fruit/fruit.js
 */
 const $ = new Env('东东农场');
@@ -1222,7 +1219,7 @@ function timeFormat(time) {
   return date.getFullYear() + '-' + ((date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)) + '-' + (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate());
 }
 function readShareCode() {
-  return new Promise(resolve => {
+  return new Promise(async resolve => {
     $.get({url: `http://api.turinglabs.net/api/v1/jd/farm/read/${randomCount}/`}, (err, resp, data) => {
       try {
         if (err) {
@@ -1240,6 +1237,8 @@ function readShareCode() {
         resolve(data);
       }
     })
+    await $.wait(10000);
+    resolve()
   })
 }
 function shareCodesFormat() {
