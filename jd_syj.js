@@ -6,24 +6,21 @@
  */
 /*
 十元街脚本，一周签到下来可获得30京豆，一天任意时刻运行一次即可
-更新地址：https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_syj.js
+更新地址：https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_syj.js
 参考github@jidesheng6修改而来
 已支持IOS双京东账号, Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, 小火箭，JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #十元街
-10 7 * * * https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_syj.js, tag=十元街, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
-
+10 7 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_syj.js, tag=十元街, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
 ================Loon==============
 [Script]
-cron "10 7 * * *" script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_syj.js, tag=十元街
-
+cron "10 7 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_syj.js, tag=十元街
 ===============Surge=================
-十元街 = type=cron,cronexp="10 7 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_syj.js
-
+十元街 = type=cron,cronexp="10 7 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_syj.js
 ============小火箭=========
-十元街 = type=cron,script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_syj.js, cronexpr="10 7 * * *", timeout=200, enable=true
+十元街 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_syj.js, cronexpr="10 7 * * *", timeout=200, enable=true
  */
 const $ = new Env('十元街');
 
@@ -86,10 +83,11 @@ function showMsg() {
     resolve()
   })
 }
+let signFlag = 0;
 function userSignIn() {
   return new Promise(resolve => {
     const body = {"activityId":"8d6845fe2e77425c82d5078d314d33c5","inviterId":"VMIQlLQqjQyjZokQmv5bIDgq011L0Ov8","channel":"MiniProgram"};
-    $.get(taskUrl('userSignIn', body), (err, resp, data) => {
+    $.get(taskUrl('userSignIn', body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -98,7 +96,8 @@ function userSignIn() {
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data.code === 0) {
-              console.log(`今日签到成功`)
+              signFlag = 0;
+              console.log(`${$.name}今日签到成功`);
               if (data.data) {
                 let { alreadySignDays, beanTotalNum, todayPrize, eachDayPrize } = data.data;
                 message += `【第${alreadySignDays}日签到】成功，获得${todayPrize.beanAmount}京豆 🐶\n`;
@@ -109,6 +108,13 @@ function userSignIn() {
             } else if (data.code === 81) {
               console.log(`今日已签到`)
               message += `【签到】失败，今日已签到`;
+            } else if (data.code === 6) {
+              //此处有时会遇到 服务器繁忙 导致签到失败,故重复三次签到
+              $.log(`${$.name}签到失败${signFlag}:${data.msg}`);
+              if (signFlag < 3) {
+                signFlag ++;
+                await userSignIn();
+              }
             } else {
               console.log(`异常：${JSON.stringify(data)}`)
             }
