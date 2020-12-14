@@ -3,19 +3,25 @@
 更新时间：2020-11-30
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+
 互助码shareCode请先手动运行脚本查看打印可看到
 一天只能帮助5个人。多出的助力码无效
+
 =================================Quantumultx=========================
 [task_local]
 #东东萌宠
 15 6-18/6 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_pet.js, tag=东东萌宠, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdmc.png, enabled=true
+
 =================================Loon===================================
 [Script]
 cron "15 6-18/6 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_pet.js,tag=东东萌宠
+
 ===================================Surge================================
 东东萌宠 = type=cron,cronexp="15 6-18/6 * * *",wake-system=1,timeout=120,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_pet.js
+
 ====================================小火箭=============================
 东东萌宠 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_pet.js, cronexpr="15 6-18/6 * * *", timeout=200, enable=true
+
 */
 const $ = new Env('东东萌宠');
 let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, newShareCodes;
@@ -109,7 +115,7 @@ async function jdPet() {
       }
       return
     }
-    console.log(`\n【您的互助码shareCode】 ${$.petInfo.shareCode}\n`);
+    console.log(`\n【您的${$.name}互助码shareCode】 ${$.petInfo.shareCode}\n`);
     await taskInit();
     if ($.taskInit.resultCode === '9999' || !$.taskInit.result) {
       console.log('初始化任务异常, 请稍后再试');

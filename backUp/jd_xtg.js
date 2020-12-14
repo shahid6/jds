@@ -2,30 +2,30 @@
  * @Author: lxk0301 
  * @Date: 2020-10-21 17:04:04 
  * @Last Modified by: lxk0301
- * @Last Modified time: 2020-11-02 00:35:04
+ * @Last Modified time: 2020-11-05 00:35:04
  */
 /**
- 星推官脚本 https://raw.githubusercontent.com/lxk0301/scripts/master/jd_xtg.js
+ 星推官脚本 https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_xtg.js
  星推官活动地址：https://prodev.m.jd.com/mall/active/3gSzKSnvrrhYushciUpzHcDnkYE3/index.html
- 活动时间：2020年10月21日 00:00:00-2020年11月12日 23:59:59
+ 活动时间：2020年10月21日 00:00:00-2020年11月11日 23:59:59
  京豆先到先得！！！！！！！！！！！
  出现任务做完没领取的情况，就再运行一次脚本
  能做完所有的任务，包括自动抽奖,脚本会给内置的shareId助力
- 一共17个活动，耗时比较久，surge请加大延迟时间
+ 一共23个活动，耗时比较久，surge请加大timeout时间
  支持京东双账号
  脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
  // quantumultx
  [task_local]
  #京东星推官
- 2 0 * * * https://raw.githubusercontent.com/lxk0301/scripts/master/jd_xtg.js, tag=京东星推官, enabled=true
+ 2 0 * * * https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_xtg.js, tag=京东星推官, enabled=true
  // Loon
  [Script]
- cron "2 0 * * *" script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_xtg.js,tag=京东星推官
+ cron "2 0 * * *" script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_xtg.js,tag=京东星推官
  // Surge
- 京东星推官 = type=cron,cronexp=2 0 * * *,wake-system=1,timeout=320,script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_xtg.js
+ 京东星推官 = type=cron,cronexp=2 0 * * *,wake-system=1,timeout=320,script-path=https://raw.githubusercontent.com/l499477004/JD-scripts/master/jd_xtg.js
  */
 const $ = new Env('京东星推官');
-const activeEndTime = '2020/11/12 23:59:59';//活动结束时间
+const activeEndTime = '2020/11/11 23:59:59+08:00';//活动结束时间
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -66,6 +66,8 @@ const starID = [
   "kongtiaozhangjike",
   "sanxingningjing",
   "xiaojiadianxiongziqi",
+  "heidianliyitong",
+  "oulebzhangyixing",
 ];
 const shareID = [
   'e646c144-28a7-4b1b-8145-5b0dbff107ec',
@@ -87,6 +89,8 @@ const shareID = [
   "dd6b5270-3e5e-436d-be0f-295a8604cf47",
   "7aef5700-4fa0-43b8-98fa-3a09f46ea47c",
   "be0ec81c-bf26-4b7b-9527-d02b0286e5af",
+  "ecd890e0-db46-46c7-862e-cb9776c207dc",
+  "91ceb3eb-df84-471e-ad77-320cd95763ee",
 ];
 const JD_API_HOST = 'https://urvsaggpt.m.jd.com/guardianstar';
 !(async () => {
@@ -107,8 +111,12 @@ const JD_API_HOST = 'https://urvsaggpt.m.jd.com/guardianstar';
       console.log(`\n===============开始【京东账号${$.index}】${$.nickName || $.UserName}==================\n`);
       if (!$.isLogin) {
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/`, {"open-url": "https://bean.m.jd.com/"});
-        $.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
-        if ($.isNode()) await notify.sendNotify(`${$.name}cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取cookie`);
+
+        if ($.isNode()) {
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+        } else {
+          $.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
+        }
         continue
       }
       console.log(`一共${starID.length}个${$.name}任务，耗时会很久，请提前知晓`)
@@ -118,9 +126,9 @@ const JD_API_HOST = 'https://urvsaggpt.m.jd.com/guardianstar';
         $.j = index;
         await JD_XTG();
       }
-      console.log(`\n等待3秒后，再去领取奖励\n`)
+      console.log(`\n等待8秒后，再去领取奖励\n`)
       console.log(`做任务之前京豆总计:${$.beanCount}`)
-      await $.wait(3000);
+      await $.wait(8000);
       for (let index = 0; index < starID.length; index ++) {
         $.activeId = starID[index];
         $.j = index;
@@ -143,17 +151,13 @@ async function showMsg() {
   console.log(`\n做任务之前京豆总计:${$.beanCount}`)
   console.log(`做完任务后京豆总计:${$.jdNum}`);
   console.log(`活动活动京豆数量:${$.jdNum - $.beanCount}`);
-  let nowTime = Date.now();
-  const zone = new Date().getTimezoneOffset();
-  if (zone === 0) {
-    nowTime += 28800000;//UTC-0时区加上8个小时
-  }
+  let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
   if (nowTime > new Date(activeEndTime).getTime()) {
-    $.msg($.name, '活动已结束', `请删除或禁用此脚本\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\nhttps://github.com/lxk0301/scripts`, {"open-url": "https://github.com/lxk0301/scripts"});
-    if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\nhttps://github.com/lxk0301/scripts`)
+    $.msg($.name, '活动已结束', `请删除或禁用此脚本\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\nhttps://github.com/l499477004/JD-scripts`, {"open-url": "https://github.com/l499477004/JD-scripts"});
+    if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n如果帮助到您可以点下🌟STAR鼓励我一下,谢谢\n咱江湖再见\nhttps://github.com/l499477004/JD-scripts`)
   } else {
     $.msg($.name, `账号${$.index} ${$.nickName || $.UserName}`, `做任务之前京豆总计:${$.beanCount}\n做完任务后京豆总计:${$.jdNum}\n${($.jdNum - $.beanCount) > 0 ? `获得京豆：${$.jdNum - $.beanCount}京豆 🐶(仅供参考)\n` : ''}京豆先到先得\n活动地址点击弹窗跳转后即可查看\n注：如未获得京豆就是已被分完`, {"open-url": "https://prodev.m.jd.com/mall/active/3gSzKSnvrrhYushciUpzHcDnkYE3/index.html"})
-    if ($.isNode()) await notify.sendNotify(`${$.name}`, `账号${$.index} ${$.nickName || $.UserName}\n做任务之前京豆总计:${$.beanCount}\n做完任务后京豆总计:${$.jdNum}\n${($.jdNum - $.beanCount) > 0 ? `获得京豆：${$.jdNum - $.beanCount}京豆 🐶(仅供参考)\n` : ''}京豆先到先得\n注：如未获得京豆就是已被分完\n活动地址：https://prodev.m.jd.com/mall/active/3gSzKSnvrrhYushciUpzHcDnkYE3/index.html`)
+    if ($.isNode()) await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}`, `账号${$.index} ${$.nickName || $.UserName}\n做任务之前京豆总计:${$.beanCount}\n做完任务后京豆总计:${$.jdNum}\n${($.jdNum - $.beanCount) > 0 ? `获得京豆：${$.jdNum - $.beanCount}京豆 🐶(仅供参考)\n` : ''}京豆先到先得\n注：如未获得京豆就是已被分完\n活动结束时间：2020年11月12日 23:59:59\n活动地址：https://prodev.m.jd.com/mall/active/3gSzKSnvrrhYushciUpzHcDnkYE3/index.html`)
   }
 }
 async function JD_XTG() {
@@ -274,7 +278,7 @@ function doSupport(shareId) {
         "Cookie": cookie,
         "Host": "urvsaggpt.m.jd.com",
         "Referer": "https://urvsaggpt.m.jd.com/static/index.html",
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
       }
     }
     $.post(options, (err, resp, data) => {
@@ -306,7 +310,7 @@ function TotalBean() {
         "Connection": "keep-alive",
         "Cookie": cookie,
         "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
       }
     }
     $.post(options, (err, resp, data) => {
@@ -348,7 +352,7 @@ function getDayPrizeStatus(prizeType, prizeId, status) {
         "Cookie": cookie,
         "Host": "urvsaggpt.m.jd.com",
         "Referer": "https://urvsaggpt.m.jd.com/static/index.html",
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
       }
     }
     $.post(options, (err, resp, data) => {
@@ -381,7 +385,7 @@ function taskPostUrl(type, id, status) {
       "Cookie": cookie,
       "Host": "urvsaggpt.m.jd.com",
       "Referer": "https://urvsaggpt.m.jd.com/static/index.html",
-      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
     }
   }
 }
@@ -407,7 +411,7 @@ function taskUrl(function_id) {
       "Cookie": cookie,
       "Host": "urvsaggpt.m.jd.com",
       "Referer": "https://urvsaggpt.m.jd.com/static/index.html",
-      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
     }
   }
 }

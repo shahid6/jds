@@ -7,6 +7,7 @@
 /*
 京东代属脚本，类似十元街，⚠️⚠️⚠️⚠️限校园用户可使用,其他用户签到失败无京豆
 一周签到下来可获得30京豆，一天任意时刻运行一次即可
+
 更新地址：https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_ds.js
 参考github@jidesheng6修改而来
 已支持IOS双京东账号, Node.js支持N个京东账号
@@ -15,11 +16,14 @@
 [task_local]
 #京东代属
 10 7 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_ds.js, tag=京东代属, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_ds.png, enabled=true
+
 ================Loon==============
 [Script]
 cron "10 7 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_ds.js, tag=京东代属
+
 ===============Surge=================
 京东代属 = type=cron,cronexp="10 7 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_ds.js
+
 ============小火箭=========
 京东代属 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_ds.js, cronexpr="10 7 * * *", timeout=200, enable=true
  */
@@ -38,7 +42,12 @@ if ($.isNode()) {
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
-  cookiesArr.push(...[$.getdata('CookieJD'), $.getdata('CookieJD2')]);
+  let cookiesData = $.getdata('CookiesJD') || "[]";
+  cookiesData = jsonParse(cookiesData);
+  cookiesArr = cookiesData.map(item => item.cookie);
+  cookiesArr.reverse();
+  cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
+  cookiesArr.reverse();
 }
 const JD_API_HOST = 'https://api.m.jd.com/';
 !(async () => {
@@ -188,6 +197,17 @@ function safeGet(data) {
     console.log(e);
     console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
     return false;
+  }
+}
+function jsonParse(str) {
+  if (typeof str == "string") {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      console.log(e);
+      $.msg($.name, '', '不要在BoxJS手动复制粘贴修改cookie')
+      return [];
+    }
   }
 }
 // prettier-ignore

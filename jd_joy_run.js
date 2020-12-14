@@ -1,6 +1,7 @@
 /**
  宠汪汪邀请助力与赛跑助力脚本，感谢github@Zero-S1提供帮助
  更新时间：2020-11-29（宠汪汪助力更新Token的配置正则表达式已改）
+
  token时效很短，几个小时就失效了,闲麻烦的放弃就行
  每天拿到token后，可一次性运行完毕即可。
  互助码friendPin是京东用户名，不是昵称（可在京东APP->我的->设置 查看获得）
@@ -10,11 +11,13 @@
  脚本里面有内置提供的friendPin，如果你没有修改脚本或者BoxJs处填写自己的互助码，会默认给脚本内置的助力。
 [MITM]
 hostname = draw.jdfcloud.com
+
 Surge
 [Script]
 宠汪汪邀请助力与赛跑助力 = type=cron,cronexp="15 10 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js
 宠汪汪助力更新Token = type=http-response,pattern=^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code=, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js
 宠汪汪助力获取Token = type=http-request,pattern=^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId=, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js
+
 圈X
 [task_local]
 # 宠汪汪邀请助力与赛跑助力
@@ -24,6 +27,7 @@ Surge
 ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code= url script-response-body https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js
 # 宠汪汪助力获取Token
 ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId= url script-request-header https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js
+
 *****Loon****
 [Script]
 cron "15 10 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_joy_run.js, tag=宠汪汪邀请助力与赛跑助力
@@ -69,7 +73,9 @@ if ($.isNode()) {
   let cookiesData = $.getdata('CookiesJD') || "[]";
   cookiesData = jsonParse(cookiesData);
   cookiesArr = cookiesData.map(item => item.cookie);
-  cookiesArr.push(...[$.getdata('CookieJD'), $.getdata('CookieJD2')]);
+  cookiesArr.reverse();
+  cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
+  cookiesArr.reverse();
   if ($.getdata('jd_joy_invite_pin')) {
     invite_pins = [];
     invite_pins.push($.getdata('jd_joy_invite_pin'));
