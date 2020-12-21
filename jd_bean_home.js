@@ -9,14 +9,11 @@
 [task_local]
 #领京豆额外奖励
 10 7 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_bean_home.js, tag=领京豆额外奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_bean_home.png, enabled=true
-
 ================Loon==============
 [Script]
 cron "10 7 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_bean_home.js, tag=领京豆额外奖励
-
 ===============Surge=================
 领京豆额外奖励 = type=cron,cronexp="10 7 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_bean_home.js
-
 ============小火箭=========
 领京豆额外奖励 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_bean_home.js, cronexpr="10 7 * * *", timeout=200, enable=true
  */
@@ -26,7 +23,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
-const helpAuthor = false; // 是否帮助作者助力，false打开通知推送，true关闭通知推送
+const helpAuthor = true; // 是否帮助作者助力，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 if ($.isNode()) {
@@ -46,8 +43,8 @@ if ($.isNode()) {
 const JD_API_HOST = 'https://api.m.jd.com/';
 !(async () => {
   $.newShareCodes = []
-  await getAuthorShareCode();
-  await getAuthorShareCode2();
+  // await getAuthorShareCode();
+  // await getAuthorShareCode2();
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
@@ -75,34 +72,34 @@ const JD_API_HOST = 'https://api.m.jd.com/';
       await jdBeanHome();
     }
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
-      console.log(`${$.UserName}去帮助下一个人`)
-      cookie = cookiesArr[i];
-      if ($.newShareCodes.length > 1) {
-        let code = $.newShareCodes[(i + 1) % $.newShareCodes.length]
-        await help(code[0], code[1])
-      }
-      if (helpAuthor && $.authorCode) {
-        console.log(`去帮助作者`)
-        const helpRes = await help($.authorCode[0], $.authorCode[1])
-        if (helpRes && helpRes.data.respCode === 'SG209') {
-          console.log(`助力次数已耗尽，跳出助力`)
-          break;
-        }
-      }
-      if (helpAuthor && $.authorCode2) {
-        for (let code of $.authorCode2) {
-          const helpRes = await help(code.shareCode, code.groupCode);
-          if (helpRes && helpRes.data.respCode === 'SG209') {
-            console.log(`助力次数已耗尽，跳出助力`)
-            break;
-          }
-        }
-      }
-    }
-  }
+  // for (let i = 0; i < cookiesArr.length; i++) {
+  //   if (cookiesArr[i]) {
+  //     $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
+  //     console.log(`${$.UserName}去帮助下一个人`)
+  //     cookie = cookiesArr[i];
+  //     if ($.newShareCodes.length > 1) {
+  //       let code = $.newShareCodes[(i + 1) % $.newShareCodes.length]
+  //       await help(code[0], code[1])
+  //     }
+  //     if (helpAuthor && $.authorCode) {
+  //       console.log(`去帮助作者`)
+  //       const helpRes = await help($.authorCode[0], $.authorCode[1])
+  //       if (helpRes && helpRes.data.respCode === 'SG209') {
+  //         console.log(`助力次数已耗尽，跳出助力`)
+  //         break;
+  //       }
+  //     }
+  //     if (helpAuthor && $.authorCode2) {
+  //       for (let code of $.authorCode2) {
+  //         const helpRes = await help(code.shareCode, code.groupCode);
+  //         if (helpRes && helpRes.data.respCode === 'SG209') {
+  //           console.log(`助力次数已耗尽，跳出助力`)
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
