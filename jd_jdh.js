@@ -6,15 +6,12 @@
 ============Quantumultx===============
 [task_local]
 #京东健康
-10 8 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js, tag=京东健康, enabled=true
-
+10 8 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js, tag=京东健康, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_jdh.png, enabled=true
 ================Loon==============
 [Script]
 cron "10 8 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js,tag=京东健康
-
 ===============Surge=================
 京东健康 = type=cron,cronexp="10 8 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js
-
 ============小火箭=========
 京东健康 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js, cronexpr="10 8 * * *", timeout=200, enable=true
  */
@@ -39,8 +36,8 @@ if ($.isNode()) {
   cookiesArr.reverse();
 }
 const JD_API_HOST = 'https://api.m.jd.com/api';
+$.newShareCodes = ['21d9b4b51a69839577027beb0aad5105', '8edbdfa148e78f028496cff17e7df35b'];
 !(async () => {
-  $.newShareCodes = [];
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
@@ -106,7 +103,7 @@ async function jdJdh() {
   await queryTask(18,"2951198") // 看名医直播
   await queryTask(17,"246147") //
   await queryTask(24, t) // 辟谣
-  // await queryTask(22,"20201215") // TODO：打卡尚未完成
+  await doTask(22,42,`${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`) // 去打卡
   await queryTask(20,"362451650500001") // 测一测
   await doTask(23,40,`${rand(10000, 20000)}`) // 走路，这个可以直接提示领奖结果
   // 以下两个需要开启家庭医生才能完成
@@ -270,7 +267,7 @@ function doTask(taskType,taskId,infoId) {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            console.log(data.data.msg)
+            console.log(data.message)
             // await rewardTask(taskType,taskId,infoId)
           }
         }
@@ -293,7 +290,7 @@ function doTask2(taskType,taskId,infoId) {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            console.log(data.data.msg)
+            console.log(data.message)
             // await rewardTask(taskType,taskId,infoId)
           }
         }
