@@ -143,10 +143,10 @@ async function doChannelsListTask(taskId, taskType) {
 async function helpFriends() {
   await updateInviteCode();
   if (!$.inviteCodes) await updateInviteCodeCDN();
-  if (!$.inviteCodes) await updateInviteCodeCDN('https://gitee.com/l499477004/updateTeam/raw/master/jd_updateSmallHomeInviteCode.json');
+  if (!$.inviteCodes) await updateInviteCodeCDN('https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_updateSmallHomeInviteCode.json');
   for (let item of $.inviteCodes.inviteCode) {
     if (!item) continue
-    await createAssistUser(item, $.createAssistUserID || "1318106976846299138");
+    await createAssistUser(item, $.createAssistUserID || "1342144551233335297");
   }
 }
 async function doAllTask() {

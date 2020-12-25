@@ -21,7 +21,7 @@ const $ = new Env('京东赚赚');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let helpAuthor=false; // 帮助作者
+let helpAuthor=true; // 帮助作者
 const randomCount = 5;
 let jdNotify = true; // 是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
@@ -39,17 +39,17 @@ if ($.isNode()) {
   cookiesArr.reverse();
   cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
   cookiesArr.reverse();
+  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [
   `ADzxfm6qXzTUMZz0`,
   `ADzxfm6qXzTUMZz0`
-  ]
+]
 !(async () => {
   $.tuanList = []
   await requireConfig();
   if (helpAuthor) await getAuthorShareCode('https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_zz.json');
-  //if (helpAuthor) await getAuthorShareCode('https://gitee.com/lxk0301/updateTeam/raw/master/jd_zz.json');
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
@@ -69,8 +69,6 @@ const inviteCodes = [
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        } else {
-          $.setdata('', `CookieJD${i ? i + 1 : ""}`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
         }
         continue
       }
@@ -252,7 +250,7 @@ function getUserInfo() {
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data.data.shareTaskRes) {
-              console.log(`\n您的${$.name}好友助力码为： ${data.data.shareTaskRes.itemId}\n`);
+              console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${data.data.shareTaskRes.itemId}\n`);
             } else {
               console.log(`已满5人助力,暂时看不到您的${$.name}好友助力码`)
             }

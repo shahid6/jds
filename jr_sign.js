@@ -8,14 +8,11 @@
 [task_local]
 #金融打卡领年终奖
 10 6 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jr_sign.js, tag=金融打卡领年终奖, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
-
 ================Loon==============
 [Script]
 cron "10 6 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jr_sign.js, tag=金融打卡领年终奖
-
 ===============Surge=================
 金融打卡领年终奖 = type=cron,cronexp="10 6 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jr_sign.js
-
 ============小火箭=========
 金融打卡领年终奖 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jr_sign.js, cronexpr="10 6 * * *", timeout=200, enable=true
  */
@@ -39,6 +36,7 @@ if ($.isNode()) {
   cookiesArr.reverse();
   cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
   cookiesArr.reverse();
+  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
 }
 const JD_API_HOST = 'https://api.m.jd.com/api';
 !(async () => {
@@ -61,8 +59,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        } else {
-          $.setdata('', `CookieJD${i ? i + 1 : ""}`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
         }
         continue
       }

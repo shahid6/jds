@@ -9,17 +9,13 @@
 =====================================Quantumult X=================================
 [task_local]
 1 7-21/2 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js, tag=种豆得豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzd.png, enabled=true
-
 =====================================Loon================================
 [Script]
 cron "1 7-21/2 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js,tag=京东种豆得豆
-
 ======================================Surge==========================
 京东种豆得豆 = type=cron,cronexp="1 7-21/2 * * *",wake-system=1,timeout=120,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js
-
 ====================================小火箭=============================
 京东种豆得豆 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_plantBean.js, cronexpr="1 7-21/2 * * *", timeout=200, enable=true
-
 搬的https://github.com/uniqueque/QuantumultX/blob/4c1572d93d4d4f883f483f907120a75d925a693e/Script/jd_plantBean.js
 */
 const $ = new Env('京东种豆得豆');
@@ -63,8 +59,6 @@ let randomCount = $.isNode() ? 20 : 5;
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        } else {
-          $.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
         }
         continue
       }
@@ -89,7 +83,7 @@ async function jdPlantBean() {
   if ($.plantBeanIndexResult.code === '0') {
     const shareUrl = $.plantBeanIndexResult.data.jwordShareInfo.shareUrl
     $.myPlantUuid = getParam(shareUrl, 'plantUuid')
-    console.log(`\n【您的${$.name}互助码】 ${$.myPlantUuid}\n`);
+    console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${$.myPlantUuid}\n`);
     roundList = $.plantBeanIndexResult.data.roundList;
     currentRoundId = roundList[1].roundId;//本期的roundId
     lastRoundId = roundList[0].roundId;//上期的roundId
@@ -367,7 +361,6 @@ async function doHelp() {
       console.log(`\n跳过自己的plantUuid\n`)
       continue
     }
-    console.log(`\n开始助力好友: ${plantUuid}`);
     await helpShare(plantUuid);
     if ($.helpResult.code === '0') {
       // console.log(`助力好友结果: ${JSON.stringify($.helpResult.data.helpShareRes)}`);
@@ -489,6 +482,7 @@ async function plantShareSupportList() {
 }
 //助力好友的api
 async function helpShare(plantUuid) {
+  console.log(`\n开始助力好友: ${plantUuid}`);
   const body = {
     "plantUuid": plantUuid,
     "wxHeadImgUrl": "",
@@ -496,6 +490,7 @@ async function helpShare(plantUuid) {
     "followType": "1",
   }
   $.helpResult = await request(`plantBeanIndex`, body);
+  console.log(`助力结果的code:${$.helpResult && $.helpResult.code}`);
 }
 async function plantBeanIndex() {
   $.plantBeanIndexResult = await request('plantBeanIndex');//plantBeanIndexBody
@@ -702,21 +697,21 @@ function request(function_id, body = {}){
   })
 }
 function taskUrl(function_id, body) {
-  body["version"] = "9.0.0.1";
+  body["version"] = "9.2.4.0";
   body["monitor_source"] = "plant_app_plant_index";
   body["monitor_refer"] = "";
   return {
     url: JD_API_HOST,
-    body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&appid=ld&client=apple&area=5_274_49707_49973&build=167283&clientVersion=9.1.0`,
+    body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&appid=ld&client=apple&area=19_1601_50258_51885&build=167490&clientVersion=9.3.2`,
     headers: {
-      'Cookie': cookie,
-      'Host': 'api.m.jd.com',
-      'Accept': '*/*',
-      'Connection': 'keep-alive',
-      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
-      'Accept-Language': 'zh-Hans-CN;q=1,en-CN;q=0.9',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Content-Type': "application/x-www-form-urlencoded"
+      "Cookie": cookie,
+      "Host": "api.m.jd.com",
+      "Accept": "*/*",
+      "Connection": "keep-alive",
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
+      "Accept-Language": "zh-Hans-CN;q=1,en-CN;q=0.9",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Content-Type": "application/x-www-form-urlencoded"
     }
   }
 }

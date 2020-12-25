@@ -9,14 +9,11 @@
 [task_local]
 #京东汽车
 10 7 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_car.js, tag=京东汽车, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
-
 ================Loon==============
 [Script]
 cron "10 7 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_car.js, tag=京东汽车
-
 ===============Surge=================
 京东汽车 = type=cron,cronexp="10 7 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_car.js
-
 ============小火箭=========
 京东汽车 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_car.js, cronexpr="10 7 * * *", timeout=200, enable=true
  */
@@ -42,6 +39,7 @@ if ($.isNode()) {
   cookiesArr.reverse();
   cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
   cookiesArr.reverse();
+  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
 }
 const JD_API_HOST = 'https://car-member.jd.com/api/';
 !(async () => {
@@ -64,8 +62,6 @@ const JD_API_HOST = 'https://car-member.jd.com/api/';
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        } else {
-          $.setdata('', `CookieJD${i ? i + 1 : ""}`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
         }
         continue
       }
@@ -82,6 +78,7 @@ const JD_API_HOST = 'https://car-member.jd.com/api/';
   })
 
 async function jdCar() {
+  await check()
   await sign()
   await $.wait(1000)
   await mission()
@@ -93,6 +90,29 @@ function showMsg() {
   return new Promise(resolve => {
     $.msg($.name, '', `【京东账号${$.index}】${$.nickName}\n${message}`);
     resolve()
+  })
+}
+
+function check() {
+  return new Promise(resolve => {
+    $.get(taskUrl('v1/user/exchange/bean/check'), (err, resp, data) => {
+      try {
+        if (err) {
+          data = JSON.parse(resp.body)
+          console.log(`${data.error.msg}`)
+          message += `签到失败，${data.error.msg}\n`
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data);
+            console.log(`兑换结果：${JSON.stringify(data)}`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
   })
 }
 
