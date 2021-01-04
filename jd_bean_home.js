@@ -116,7 +116,7 @@ async function jdBeanHome() {
   // }
   do {
     await doTask2()
-    await $.wait(1000)
+    await $.wait(3000)
   } while (!$.doneState)
   await $.wait(1000)
   await award("feeds")
@@ -150,6 +150,8 @@ function doTask2() {
               } else if (data.code === '0' && data.errorCode === 'HT201') {
                 $.doneState = true
               } else {
+                //HT304风控用户
+                $.doneState = true
                 console.log(`做任务异常：${JSON.stringify(data)}`)
               }
             }
@@ -165,7 +167,7 @@ function doTask2() {
 
 function getAuthorShareCode() {
   return new Promise(resolve => {
-    $.get({url: "https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_updateBeanHome.json",headers:{
+    $.get({url: "https://gitee.com/shylocks/updateTeam/raw/main/jd_bean_home",headers:{
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }}, async (err, resp, data) => {
       try {
