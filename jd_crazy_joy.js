@@ -310,7 +310,7 @@ function doApplyJdBean(bean = 1000) {
     })
   })
 }
-function getUserInfo(code = "wVLpzgI95rNd3cmh3u0X2A==") {
+function getUserInfo(code = "EdLPh8A6X5G1iWXu-uPYfA==") {
   let body = {"paramData": {"inviter": code}}
   return new Promise(async resolve => {
     $.get(taskUrl('crazyJoy_user_gameState', JSON.stringify(body)), async (err, resp, data) => {
@@ -659,7 +659,7 @@ function readShareCode() {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取${randomCount}个码放到您固定的互助码后面`)
+            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
