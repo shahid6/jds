@@ -253,7 +253,7 @@ function receiveBlueCoin(timeout = 0) {
 //每日签到
 function smtgSign() {
   return new Promise((resolve) => {
-    $.get(taskUrl('smtg_sign'), async (err, resp, data) => {
+    $.get(taskUrl('smtg_sign', {"shareId":"QcSH6BqSXysv48bMoRfTBz7VBqc5P6GodDUBAt54d8598XAUtNoGd4xWVuNtVVwNO1dSKcoaY3sX_13Z-b3BoSW1W7NnqD36nZiNuwrtyO-gXbjIlsOBFpgIPMhpiVYKVAaNiHmr2XOJptu14d8uW-UWJtefjG9fUGv0Io7NwAQ","channel":"4"}), async (err, resp, data) => {
       try {
         // console.log('ddd----ddd', data)
         if (err) {
@@ -313,35 +313,15 @@ async function businessCircleActivity() {
     if (joinStatus === 0) {
       console.log(`\n注：PK会在每天的七点自动随机加入lxk0301创建的队伍\n`)
       await updatePkActivityId();
-      if (!$.updatePkActivityIdRes) await updatePkActivityIdCDN('https://gitee.com/lxk0301/updateTeam/raw/master/jd_updateTeam.json');
-      if (!$.updatePkActivityIdRes) await updatePkActivityIdCDN('https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_updateTeam.json');
+      if (!$.updatePkActivityIdRes) await updatePkActivityIdCDN('https://cdn.jsdelivr.net/gh/l499477004/updateTeam@master/jd_updateTeam.json');
+      if (!$.updatePkActivityIdRes) await updatePkActivityIdCDN('https://cdn.jsdelivr.net/gh/l499477004/updateTeam@master/jd_updateTeam.json');
       console.log(`\nupdatePkActivityId[pkActivityId]:::${$.updatePkActivityIdRes.pkActivityId}`);
       console.log(`\n京东服务器返回的[pkActivityId] ${pkActivityId}`);
       if ($.updatePkActivityIdRes && ($.updatePkActivityIdRes.pkActivityId === pkActivityId)) {
         let Teams = [
           {
-            "teamId": "-4msulYas0O2JsRhE-2TA5XZmBQ_1604247312176",
-            "inviteCode": "-4msulYas0O2JsRhE-2TA5XZmBQ"
-          },
-          {
-            "teamId": "Ih4-a-mwZPUj9Gy6iw_1604277683224",
-            "inviteCode": "eU9Yar_mb_9z92_WmXNG0w"
-          },
-          {
-            "teamId": "eU9Ya77gZK5z-TqHn3UWhQ_1604277779750",
-            "inviteCode": "eU9YaOnjYK4j-GvWmXIWhA"
-          },
-          {
-            "teamId": "eU9Ya-y2N_5z9DvXwyIV0A",
-            "inviteCode": "eU9YaLm0bq4i-TrUzSUUhA"
-          },
-          {
-            "teamId": "eU9Ya-y2N_5z9DvXwyIV0A",
-            "inviteCode": "aURoM7PtY_Q"
-          },
-          {
-            "teamId": "eU9Ya-y2N_5z9DvXwyIV0A",
-            "inviteCode": "eU9YaeS3Z6ol8zrRmnMb1Q"
+            "teamId": "JxI-aOu1ZvwinjM_1609979071192",
+            "inviteCode": "JxI-aOu1ZvwinjM"
           }
         ]
         Teams = $.updatePkActivityIdRes['Teams'] || Teams;
@@ -706,7 +686,7 @@ async function limitTimeProduct() {
 function updatePkActivityId(url = 'https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_updateTeam.json') {
   return new Promise(resolve => {
     //https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_updateTeam.json
-    //https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_updateTeam.json
+    //https://raw.githubusercontent.com/lxk0301/updateTeam/master/jd_updateTeam.json
     $.get({url}, async (err, resp, data) => {
       try {
         if (err) {

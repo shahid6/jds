@@ -1,6 +1,6 @@
 /*
 东东萌宠 更新地址： https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_pet.js
-更新时间：2020-12-26
+更新时间：2021-01-06
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 互助码shareCode请先手动运行脚本查看打印可看到
@@ -24,9 +24,9 @@ let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, new
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
    //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTE1NDUwMTI0MDAwMDAwMDM5MzI3NjQ5@MTEzMzI0OTE0NTAwMDAwMDA0MDQwNDIxNQ==@MTAxODc2NTEzNTAwMDAwMDAxOTg5MTI0MQ==@MTE1NDAxNzgwMDAwMDAwNDA0MDM2NDE=',
+  'MTAxODc2NTEzNTAwMDAwMDAwMjg3MDg2MA==@MTAxODc2NTEzMzAwMDAwMDAyNzUwMDA4MQ==@MTAxODc2NTEzMjAwMDAwMDAzMDI3MTMyOQ==@MTAxODc2NTEzNDAwMDAwMDAzMDI2MDI4MQ==@MTAxODcxOTI2NTAwMDAwMDAxOTQ3MjkzMw==',
   //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTE1NDUwMTI0MDAwMDAwMDM5MzI3NjQ5@MTEzMzI0OTE0NTAwMDAwMDA0MDQwNDIxNQ==@MTAxODc2NTEzNTAwMDAwMDAxOTg5MTI0MQ==@MTE1NDAxNzgwMDAwMDAwNDA0MDM2NDE=',
+  'MTAxODc2NTEzMjAwMDAwMDAzMDI3MTMyOQ==@MTAxODcxOTI2NTAwMDAwMDAyNjA4ODQyMQ==@MTAxODc2NTEzOTAwMDAwMDAyNzE2MDY2NQ==@MTE1NDUyMjEwMDAwMDAwNDI0MDM2MDc=',
 ]
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
@@ -225,8 +225,10 @@ async function masterHelpInit() {
       if(!res.result.addedBonusFlag) {
         console.log("开始领取额外奖励");
         let getHelpAddedBonusResult = await request('getHelpAddedBonus');
+        if (getHelpAddedBonusResult.resultCode === '0') {
+          message += `【额外奖励${getHelpAddedBonusResult.result.reward}领取】${getHelpAddedBonusResult.message}\n`;
+        }
         console.log(`领取30g额外奖励结果：【${getHelpAddedBonusResult.message}】`);
-        message += `【额外奖励${getHelpAddedBonusResult.result.reward}领取】${getHelpAddedBonusResult.message}\n`;
       } else {
         console.log("已经领取过5好友助力额外奖励");
         message += `【额外奖励】已领取\n`;
@@ -255,6 +257,8 @@ async function masterHelpInit() {
  * 运行脚本时你自己的shareCode会在控制台输出, 可以将其分享给他人
  */
 async function slaveHelp() {
+  $.log(`\n因1.6日好友助力功能下线。故暂时屏蔽\n`)
+  return
   let helpPeoples = '';
   for (let code of newShareCodes) {
     console.log(`开始助力京东账号${$.index} - ${$.nickName}的好友: ${code}`);
@@ -275,7 +279,7 @@ async function slaveHelp() {
         console.log(`助力其他情况：${JSON.stringify(response)}`);
       }
     } else {
-      console.log(`助理好友结果: ${response.message}`);
+      console.log(`助力好友结果: ${response.message}`);
     }
   }
   if (helpPeoples && helpPeoples.length > 0) {
@@ -461,7 +465,9 @@ function shareCodesFormat() {
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
-    const readShareCodeRes = await readShareCode();
+    //因好友助力功能下线。故暂时屏蔽
+    // const readShareCodeRes = await readShareCode();
+    const readShareCodeRes = null;
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
     }
