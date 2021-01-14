@@ -6,7 +6,7 @@ name: 东东小窝
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '16 16 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout
         run: |
-          git clone https://github.com/l499477004/JD-scripts.git ~/scripts
+          git clone ${{ secrets.GIT_CLONE_URL }} ~/scripts
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
