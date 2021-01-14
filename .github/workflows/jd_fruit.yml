@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout
         run: |
-          git clone ${{ secrets.GITHUB_URL }} ~/scripts
+          git clone ${{ secrets.GIT_CLONE_URL }} ~/scripts
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
