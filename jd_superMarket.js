@@ -37,7 +37,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'JxI-aOu1ZvwinjM@-4msulYas0O2JsRhE-2TA5XZmBQ@eU9Yar_mb_9z92_WmXNG0w@eU9YaejjYv4g8T2EwnsVhQ',
+  '-4msulYas0O2JsRhE-2TA5XZmBQ@eU9Yar_mb_9z92_WmXNG0w@eU9YaejjYv4g8T2EwnsVhQ',
   //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
   'aURoM7PtY_Q@eU9Ya-y2N_5z9DvXwyIV0A@eU9YaOnjYK4j-GvWmXIWhA',
 ]
@@ -320,7 +320,7 @@ async function businessCircleActivity() {
       if ($.updatePkActivityIdRes && ($.updatePkActivityIdRes.pkActivityId === pkActivityId)) {
         let Teams = [
           {
-            "teamId": "JxI-aOu1ZvwinjM_1609979071192",
+            "teamId": "JxI-aOu1ZvwinjM_1610670993233",
             "inviteCode": "JxI-aOu1ZvwinjM"
           }
         ]
@@ -826,8 +826,6 @@ function smtg_sellMerchandise(body) {
 //新版东东超市
 function updatePkActivityId(url = 'https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_updateTeam.json') {
   return new Promise(resolve => {
-    //https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_updateTeam.json
-    //https://raw.githubusercontent.com/lxk0301/updateTeam/master/jd_updateTeam.json
     $.get({url}, async (err, resp, data) => {
       try {
         if (err) {
@@ -844,10 +842,8 @@ function updatePkActivityId(url = 'https://raw.githubusercontent.com/l499477004/
     })
   })
 }
-function updatePkActivityIdCDN(url = 'https://raw.fastgit.org/l499477004/updateTeam/master/jd_updateTeam.json') {
+function updatePkActivityIdCDN(url) {
   return new Promise(async resolve => {
-    //https://cdn.jsdelivr.net/gh/lxk0301/updateTeam@master/jd_updateTeam.json
-    //https://raw.githubusercontent.com/lxk0301/updateTeam/master/jd_updateTeam.json
     const headers = {
       "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
     }
