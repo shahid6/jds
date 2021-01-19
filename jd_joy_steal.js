@@ -1,3 +1,11 @@
+jd_scripts/jd_joy_steal.js /
+@lxk0301
+lxk0301 update
+Latest commit 9ba889a 14 hours ago
+ History
+ 1 contributor
+580 lines (577 sloc)  28.8 KB
+  
 /*
 jd宠汪汪偷好友积分与狗粮,及给好友喂食
 偷好友积分上限是20个好友(即获得100积分)，帮好友喂食上限是20个好友(即获得200积分)，偷好友狗粮上限也是20个好友(最多获得120g狗粮)
@@ -253,7 +261,7 @@ async function helpFriendsFeed() {
 function getFriends(currentPage = '1') {
   return new Promise(resolve => {
     const options = {
-      url: `${JD_API_HOST}/getFriends?itemsPerPage=20&currentPage=${currentPage}`,
+      url: `${JD_API_HOST}/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5`,
       headers: {
         'Cookie': cookie,
         'reqSource': 'h5',
@@ -264,7 +272,8 @@ function getFriends(currentPage = '1') {
         'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate, br',
-      }
+      },
+      timeout: 10000
     }
     $.get(options, (err, resp, data) => {
       try {
