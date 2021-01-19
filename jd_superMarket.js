@@ -1,24 +1,24 @@
 /*
- * @Author: lxk0301 https://github.com/lxk0301 
+ * @Author: LXK9301 https://github.com/LXK9301
  * @Date: 2020-08-16 18:54:16
- * @Last Modified by: lxk0301
+ * @Last Modified by: LXK9301
  * @Last Modified time: 2021-1-9 21:22:37
  */
 /*
 东东超市(活动入口：京东APP-》首页-》京东超市-》底部东东超市)
 Some Functions Modified From https://github.com/Zero-S1/JD_tools/blob/master/JD_superMarket.py
 支持京东双账号
-京小超兑换奖品请使用此脚本 https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_blueCoin.js
+京小超兑换奖品请使用此脚本 https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_blueCoin.js
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 // QuantumultX
 [task_local]
 #东东超市
-11 1-23/5 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_superMarket.js, tag=东东超市, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxc.png, enabled=true
+11 1-23/5 * * * https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_superMarket.js, tag=东东超市, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxc.png, enabled=true
 // Loon
 [Script]
-cron "11 1-23/5 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_superMarket.js,tag=东东超市
+cron "11 1-23/5 * * *" script-path=https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_superMarket.js,tag=东东超市
 // Surge
-东东超市 = type=cron,cronexp="11 1-23/5 * * *",wake-system=1,timeout=320,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_superMarket.js
+东东超市 = type=cron,cronexp="11 1-23/5 * * *",wake-system=1,timeout=320,script-path=https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_superMarket.js
  */
 const $ = new Env('东东超市');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -350,12 +350,9 @@ async function businessCircleActivity() {
     }
     if (pkStatus === 1) {
       console.log(`商圈PK进行中\n`)
-    } else if (pkStatus === 2) {
-      console.log(`商圈PK结束了`)
-      if (prizeInfo.pkPrizeStatus === 2) {
-        console.log(`开始领取商圈PK奖励`);
+      if (!teamId) {
         const receivedPkTeamPrize = await smtg_receivedPkTeamPrize();
-        console.log(`商圈PK奖励领取结果：${JSON.stringify(receivedPkTeamPrize)}`)
+        console.log(`商圈PK奖励领取结果：${JSON.stringify(receivedPkTeamPrize)}\n`)
         if (receivedPkTeamPrize.data.bizCode === 0) {
           if (receivedPkTeamPrize.data.result.pkResult === 1) {
             const { pkTeamPrizeInfoVO } = receivedPkTeamPrize.data.result;
@@ -369,6 +366,26 @@ async function businessCircleActivity() {
             }
           }
         }
+      }
+    } else if (pkStatus === 2) {
+      console.log(`商圈PK结束了`)
+      if (prizeInfo.pkPrizeStatus === 2) {
+        console.log(`开始领取商圈PK奖励`);
+        // const receivedPkTeamPrize = await smtg_receivedPkTeamPrize();
+        // console.log(`商圈PK奖励领取结果：${JSON.stringify(receivedPkTeamPrize)}`)
+        // if (receivedPkTeamPrize.data.bizCode === 0) {
+        //   if (receivedPkTeamPrize.data.result.pkResult === 1) {
+        //     const { pkTeamPrizeInfoVO } = receivedPkTeamPrize.data.result;
+        //     message += `【商圈PK奖励】${pkTeamPrizeInfoVO.blueCoin}蓝币领取成功\n`;
+        //     if ($.isNode()) {
+        //       await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】 ${$.nickName}\n【商圈队伍】PK获胜\n【奖励】${pkTeamPrizeInfoVO.blueCoin}蓝币领取成功`)
+        //     }
+        //   } else if (receivedPkTeamPrize.data.result.pkResult === 2) {
+        //     if ($.isNode()) {
+        //       await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】 ${$.nickName}\n【商圈队伍】PK失败`)
+        //     }
+        //   }
+        // }
       } else if (prizeInfo.pkPrizeStatus === 1) {
         console.log(`商圈PK奖励已经领取\n`)
       }
@@ -411,12 +428,12 @@ async function businessCircleActivity() {
     }
     if (otherBusinessCircleVO.hotPoint - businessCircleVO.hotPoint > 300 && (Date.now() > (pkSettleTime - 24 * 60 * 60 * 1000))) {
       //退出该商圈
-      if (inviteCode === '-4msulYas0O2JsRhE-2TA5XZmBQ') return;
+      if (inviteCode === 'JxI-aOu1ZvwinjM') return;
       console.log(`商圈PK已过1天，对方商圈人气值还大于我方商圈人气值300，退出该商圈重新加入`);
       await smtg_quitBusinessCircle();
     } else if (otherBusinessCircleVO.hotPoint > businessCircleVO.hotPoint && (Date.now() > (pkSettleTime - 24 * 60 * 60 * 1000 * 2))) {
       //退出该商圈
-      if (inviteCode === '-4msulYas0O2JsRhE-2TA5XZmBQ') return;
+      if (inviteCode === 'JxI-aOu1ZvwinjM') return;
       console.log(`商圈PK已过2天，对方商圈人气值还大于我方商圈人气值，退出该商圈重新加入`);
       await smtg_quitBusinessCircle();
     }
