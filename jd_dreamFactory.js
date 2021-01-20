@@ -1,6 +1,6 @@
 /*
 京东京喜工厂
-更新时间：2021-1-17
+更新时间：2021-1-19
 活动入口 :京东APP->游戏与互动->查看更多->京喜工厂
 或者: 京东APP首页搜索 "玩一玩" ,造物工厂即可
 已支持IOS双京东账号,Node.js支持N个京东账号
@@ -28,7 +28,12 @@ const randomCount = $.isNode() ? 20 : 5;
 let tuanActiveId = `6S9y4sJUfA2vPQP6TLdVIQ==`;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '';
-const inviteCodes = ['2HVCZsb25UVOsaRlBI9oZA==' , '-y6KmUw--5AWvPub4XPEqg=='];
+const inviteCodes = [
+  'V5LkjP4WRyjeCKR9VRwcRX0bBuTz7MEK0-E99EJ7u0k=@0WtCMPNq7jekehT6d3AbFw==',
+  "gB99tYLjvPcEFloDgamoBw==",
+  '-OvElMzqeyeGBWazWYjI1Q==',
+  'GFwo6PntxDHH95ZRzZ5uAg=='
+];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [];
 if ($.isNode()) {
@@ -883,6 +888,10 @@ async function tuanActivity() {
       const QueryTuanRes = await QueryTuan(activeId, tuanId);
       if (QueryTuanRes && QueryTuanRes.ret === 0) {
         const { tuanInfo } = QueryTuanRes.data;
+        if ((tuanInfo && tuanInfo[0]['endTime']) <= QueryTuanRes['nowTime'] && surplusOpenTuanNum > 0) {
+          $.log(`之前的团已过期，准备重新开团\n`)
+          await CreateTuan();
+        }
         for (let item of tuanInfo) {
           const { realTuanNum, tuanNum, userInfo } = item;
           $.log(`\n开团情况:${realTuanNum}/${tuanNum}\n`);
@@ -1013,6 +1022,7 @@ function CreateTuan() {
             data = JSON.parse(data);
             if (data['ret'] === 0) {
               console.log(`开团成功tuanId为\n${data.data['tuanId']}`);
+              $.tuanIds.push(data.data['tuanId']);
             } else {
               console.log(`异常：${JSON.stringify(data)}`);
             }
@@ -1350,9 +1360,9 @@ function shareCodesFormat() {
 }
 function requireConfig() {
   return new Promise(async resolve => {
-    await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/l499477004/updateTeam@master/jd_updateFactoryTuanId.json');
+    await updateTuanIdsCDN('https://raw.githubusercontent.com/l499477004/updateTeam/master/jd_updateFactoryTuanId.json');
     if (!$.tuanIdS) await updateTuanIds();
-    if (!$.tuanIdS) await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/l499477004/updateTeam@master/jd_updateFactoryTuanId.json');
+    if (!$.tuanIdS) await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/LXK9301/updateTeam@master/jd_updateFactoryTuanId.json');
     if ($.tuanIdS && $.tuanIdS.tuanActiveId) {
       tuanActiveId = $.tuanIdS.tuanActiveId;
     }
