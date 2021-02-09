@@ -193,6 +193,8 @@ if ($.isNode()) {
           continue
         }
         await jdCrazyJoy()
+        if(count >= 1500){
+          resolve();}
       }
     }
     $.log(`\n\n`)
